@@ -1,5 +1,6 @@
 .barra::-webkit-scrollbar {
-    width: 8px;               /* width of the entire scrollbar */
+    width: 8px;     
+    height: 8px;          /* width of the entire scrollbar */
   }
   .barra::-webkit-scrollbar-track {
     background: rgb(202, 148, 148);        /* color of the tracking area */

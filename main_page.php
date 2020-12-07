@@ -33,25 +33,23 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             <span aria-hidden="true"></span>
           </button>
         </div>
-        <form action="" method="post">
+        <form action="./controllers/upd_articulo.php" method="post">
             <div class="modal-body">
                 <div class="container">
-                    <div class="fetched-data"></div>
-                    <div. class="row py-2">
+                    <div class="row py-2">
                             <div class="col-4">
                                 <label for="">ID de artículo</label>
                             </div>
                             <div class="col-7">
-                                <input type="text" class="form-control" name="id">
+                                <input type="text"  id="id_modal" name="upd_id" class="form-control" >
                             </div>
-                    </div.fetched-data>
-
+                    </div>
                     <div class="row py-2">
                             <div class="col-4">
                                 <label for="">Nombre</label>
                             </div>
                             <div class="col-7">
-                                <input type="text" class="form-control" name="nombre">
+                                <input type="text" id="nombre_modal" name="upd_nombre" class="form-control" name="nombre">
                             </div>
                     </div>
 
@@ -60,7 +58,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                 <label for="">Color</label>
                             </div>
                             <div class="col-7">
-                                <input type="text" class="form-control" name="color">
+                                <input type="text" id="color_modal" name="upd_color" class="form-control" name="color">
                             </div>
                     </div>
 
@@ -69,7 +67,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                             <label for="">Talla o forma</label>
                         </div>
                         <div class="col-7">
-                            <input type="text" class="form-control" name="talla_forma">
+                            <input type="text" id="talla_forma_modal" name="upd_talla" class="form-control" name="talla_forma">
                         </div>
                     </div>
 
@@ -78,7 +76,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                             <label for="">Material</label>
                         </div>
                         <div class="col-7">
-                            <input type="text" class="form-control" name="Material">
+                            <input type="text" id="material_modal" name="upd_material" class="form-control" name="Material">
                         </div>
                     </div>
 
@@ -87,7 +85,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                             <label for="">Cantidad</label>
                         </div>
                         <div class="col-7">
-                            <input type="number" class="form-control" name="cantidad">
+                            <input type="number" id="cantidad_modal" name="upd_cantidad" class="form-control" name="cantidad">
                         </div>
                     </div>
 
@@ -96,19 +94,20 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                             <label for="">Nota</label>
                         </div>
                         <div class="col-7">
-                            <textarea type="text" class="form-control" name="nota"></textarea>
+                            <textarea type="text" id="nota_modal" class="form-control" name="nota"></textarea>
                         </div>
                     </div>
 
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <button type="submit"  class="btn btn-primary">Guardar Cambios</button>
             </div>
         </form>
       </div>
     </div>
+  </div>
   </div>
 
   <!-- Modal retirar -->
@@ -121,7 +120,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="" method="post">
+        <form action="./controllers/ret_articulo.php" method="post">
             <div class="modal-body">
                 <div class="container">
 
@@ -130,7 +129,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                             <label for="">ID de producto</label>
                         </div>
                         <div class="col-7">
-                            <input type="text" class="form-control" name="id_producto">
+                            <input type="text" class="form-control" id="id_retirar" name="id_retirar">
                         </div>
                     </div>
                     
@@ -139,7 +138,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                             <label for="">Cantidad</label>
                         </div>
                         <div class="col-7">
-                            <input type="text" class="form-control" name="cantidad">
+                            <input type="number" class="form-control" name="cant_retirar">
                         </div>
                     </div>
                     
@@ -148,18 +147,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                             <label for="">Cliente</label>
                         </div>
                         <div class="col-7">
-                            <input type="text" class="form-control" name="nombre_cliente">
+                            <input type="text" class="form-control" name="cliente_retirar   ">
                         </div>
                     </div>
                     
-                    <div class="row py-2">
-                        <div class="col-4">
-                            <label for="">ID Usuario</label>
-                        </div>
-                        <div class="col-7">
-                            <input type="text" class="form-control" name="id_usuario">
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -175,30 +166,46 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
   <div class="modal fade" id="modal_borrar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="exampleModalLabel">Borrar articulo</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <h5>¿Está seguro que desea eliminar articulo?</h5>
-          <input type="text" name="" id="id_delete" placeholder="id a eliminar">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-primary">Confirmar</button>
-        </div>
+        <form action="./controllers/del_articulo.php" method="post">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Borrar articulo</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>¿Está seguro que desea eliminar articulo?</h5>
+                <input type="text" class="d-none" name="id_delete" id="id_delete" placeholder="id a eliminar">
+            </div>
+            <div class="modal-footer">
+                <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Confirmar</button>
+            </div>
+        </form>
       </div>
     </div>
   </div>
 
 <body class="barra bg-light">
     <header>
-        <div class="container-fluid text-center py-4 mb-4" style="background-color:lightgrey">
-            <h1 class="" style="font-size:calc(30px + 2.5vw);">Inventario</h1>
-            <h3>Bienvenido, <?php htmlspecialchars($_SESSION["username"]) ?></h3>
-            <a href="logout.php" class="btn btn-danger mr-1">Cerrar sesion</a>
+        <div class="container-fluid text-center p-4 mb-4" style="background-color:lightgrey">
+            <div class="row">
+                <div class="col-6 text-left pl-4">
+                    <h1 class="font-weight-bold" style="font-size: calc(30px + 2.5vw);">Inventario</h1>
+                    <h1 class="" style="font-size: calc(25px + 2.0vw);">Star productions</h1>
+                </div>
+                <div class="col-6">
+                    <section class="p-2 mt-2 text-right">
+                        <span>
+                            <img src="./img/user.svg" class="rounded-circle " alt="" height="40">
+                            <span>
+                            <h3 class=" btn mx-1 p-2">Bienvenido, <?php print_r ($_SESSION["username"]); ?></h3>
+                            </span>
+                        </span>
+                        <a href="logout.php" class="btn btn-danger ">Cerrar sesion</a>
+                    </section>
+                </div>
+            </div>
 
         </div>
     </header>
@@ -243,15 +250,16 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                 while ($row = mysqli_fetch_array($result))
                                 {
                                     echo '<tr>'.
-                                        "<th scope='col'>". $row["id"]."</th>".
-                                        "<th scope='col'>". $row["nombre"]."</th>".
-                                        "<th scope='col'>". $row["color"]."</th>".
-                                        "<th scope='col'>". $row["talla_forma"]."</th>".
-                                        "<th scope='col'>". $row["material"]."</th>".
-                                        "<th scope='col'>". $row["cantidad"]."</th>".
-                                        "<th scope='col'><a data-toggle='modal' href='#modal_editar' id='upd_art' data-id=".$row["id"]." class='btn btn-primary'>Editar</a></th>".
-                                        "<th scope='col'><a data-toggle='modal' data-target='#modal_retirar'  class='btn btn-success'>Retirar</a></th>".
-                                        "<th scope='col'><a data-toggle='modal' data-target='#modal_borrar' class='btn btn-danger'>Borrar</a></th>".
+                                        "<th class='d-none' id=nota" . $row['id'] .">" . $row['nota'] . "</th>".
+                                        "<th scope='col' id=id" . $row["id"].">". $row["id"]."</th>".
+                                        "<th scope='col' id=nombre" . $row["id"].">". $row["nombre"]."</th>".
+                                        "<th scope='col' id=color" . $row["id"].">". $row["color"]."</th>".
+                                        "<th scope='col' id=talla" . $row["id"].">". $row["talla_forma"]."</th>".
+                                        "<th scope='col' id=material" . $row["id"].">". $row["material"]."</th>".
+                                        "<th scope='col' id=cant" . $row["id"].">". $row["cantidad"]."</th>".
+                                        "<th scope='col'><a data-toggle='modal' href='#modal_editar'  id=".$row["id"]." class='btn btn-primary upd'>Editar</a></th>".
+                                        "<th scope='col'><a data-toggle='modal' data-target='#modal_retirar' id=".$row["id"]." class='btn btn-success ret'>Retirar</a></th>".
+                                        "<th scope='col'><a data-toggle='modal' data-target='#modal_borrar' id=".$row["id"]." class='btn btn-danger del'>Borrar</a></th>".
                                         '</tr>';
     
                                 }
@@ -328,7 +336,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <div class="container ">
             <form action="" method="GET">
                 <?php
-                $result = mysqli_query($link, 'SELECT * FROM historial')
+                $result = mysqli_query($link, 'SELECT * FROM historial ORDER BY tmsp desc')
                 ?>
                 <h1 class="text-left p-2 m-1 font-weigth-bold" style="font-size:calc(20px + 1.7vw);">Historial</h1>
                 <div class="container py-2 mb-2">
@@ -355,7 +363,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                 while ($row = mysqli_fetch_array($result))
                                 {
                                     echo '<tr>';
-                                    echo "<th scope='col'>". $row["tiempo"]."</th>";
+                                    echo "<th scope='col'>". $row["tmsp"]."</th>";
                                     echo "<th scope='col'>". $row["accion"]."</th>";
                                     echo "<th scope='col'>". $row["articulo"]."</th>";
                                     echo '</tr>';
@@ -368,6 +376,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             </form>
         </div>
     </section>
-
+    <script src="main_page.js"></script>
 </body>
 </html>
