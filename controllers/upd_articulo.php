@@ -13,8 +13,19 @@ $nota = $_POST['nota'];
 $query = "CALL upd_articulo($id, '$nombre', '$color', '$talla', '$material', $cantidad, '$nota')";
 $result = mysqli_query($link, $query);
 
-echo "<meta http-equiv=\"refresh\" content=\"0;URL=../main_page.php\">";
-
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    echo ("<script>
+        window.alert('Se ha actualizado el articulo con éxito!');
+        window.location.href='../';
+        </script>");
+    
+}
+else{
+    echo ("<script>
+    window.alert('Ocurrio un error!');
+    window.location.href='../';
+    </script>");
+}
 
 mysqli_close($link);
 

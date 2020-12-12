@@ -105,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
-<body class=" barra" >
+<body class="bg-light barra" >
 <div class="container-fluid" style="margin-top: 10%;">
         <div class="row">
             <div class="col-md-6 col-sm-12">
@@ -135,7 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-sm-12 animate__animated animate__fadeIn animate__slow">
+            <div class="col-md-6 col-sm-12 animate__animated animate__fadeIn animate__slow p-4">
                 <div class=" text-center container-fluid" >
                     <!-- <img class="img-fluid" style="max-width: 350px;" src=""  alt=""> -->
                     <h6 class=" text-center" style="font-size:calc(25px + 1vw)"> Star Productions</h6>

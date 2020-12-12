@@ -23,6 +23,86 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 
+
+<!-- Modal editar -->
+<div class="modal fade" id="modal_agregar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel">Añadir artículo</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+        <form action="./controllers/add_articulo.php" method="post">
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row py-2">
+                            <div class="col-4">
+                                <label for="">Nombre</label>
+                            </div>
+                            <div class="col-7">
+                                <input type="text"  name="add_nombre" class="form-control" name="nombre">
+                            </div>
+                    </div>
+
+                    <div class="row py-2">
+                            <div class="col-4">
+                                <label for="">Color</label>
+                            </div>
+                            <div class="col-7">
+                                <input type="text"  name="add_color" class="form-control" name="color">
+                            </div>
+                    </div>
+
+                    <div class="row py-2">
+                        <div class="col-4">
+                            <label for="">Talla o forma</label>
+                        </div>
+                        <div class="col-7">
+                            <input type="text"  name="add_talla" class="form-control" name="talla_forma">
+                        </div>
+                    </div>
+
+                    <div class="row py-2">
+                        <div class="col-4">
+                            <label for="">Material</label>
+                        </div>
+                        <div class="col-7">
+                            <input type="text"  name="add_material" class="form-control" name="Material">
+                        </div>
+                    </div>
+
+                    <div class="row py-2">
+                        <div class="col-4">
+                            <label for="">Cantidad</label>
+                        </div>
+                        <div class="col-7">
+                            <input type="number"  name="add_cantidad" class="form-control" name="cantidad">
+                        </div>
+                    </div>
+
+                    <div class="row py-2">
+                        <div class="col-4">
+                            <label for="">Nota</label>
+                        </div>
+                        <div class="col-7">
+                            <textarea type="text"  class="form-control" name="add_nota"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="reset" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                <button type="submit"  class="btn btn-primary">Añadir producto</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+
 <!-- Modal editar -->
 <div class="modal fade" id="modal_editar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -147,9 +227,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                             <label for="">Cliente</label>
                         </div>
                         <div class="col-7">
-                            <input type="text" class="form-control" name="cliente_retirar   ">
+                            <input type="text" class="form-control" name="cliente_retirar">
                         </div>
                     </div>
+                            <input class="d-none" type="text" class="form-control" name="cant_total" id="cant_total">
                     
                 </div>
             </div>
@@ -222,11 +303,21 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 <h1 class="text-left p-2 m-1 font-weigth-bold" style="font-size:calc(20px + 1.7vw);">Articulos</h1>
                 <div class="container py-2 mb-2">
                     <div class="row">
-                        <div class="col-8">
+                        <div class="col-md-7 col-sm-12 py-2">
                             <input class="form-control" type="text" value="" placeholder="Nombre de articulo">
                         </div>
-                        <div class="col-4">
-                            <button class="btn btn-danger">Buscar</button>
+                        <div class="col-md-5 col-sm-12  p-2">
+                            <div class="container ">
+                                <div class="row justify-content-center">
+                                    <div class="col-4 ">
+                                        <button class="btn btn-danger">Buscar</button>
+                                    </div>
+                                    <div class="col-8 justify-content-center">
+                                        <a class="btn btn-primary" data-target="#modal_agregar" data-toggle="modal">Agregar nuevo</a>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
