@@ -508,6 +508,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             </form>
         </div>
     </section>
-    <script src="main_page.js"></script>
+    <script src="./js/anular.js"></script>
+    <script src="./js/del.js"></script>
+    <script src="./js/retirar.js"></script>
+    <script src="./js/upd.js"></script>
 </body>
 </html>
