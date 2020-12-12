@@ -8,6 +8,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
+require_once 'db/conexion.php';
+
+
 ?>
 
 <!DOCTYPE html>
@@ -280,10 +283,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             </div>
             <div class="modal-body">
                 <h5>¿Está seguro que desea anular este retiro?</h5>
-                <input type="text" class="" name="id_anular" id="id_anular" placeholder="id de retiro a anular">
-                <input type="text" class="" name="id_anular_art" id="id_anular_art" placeholder="id de art a anular">
-                <input type="text" class="" name="cant_anular" id="cant_anular" placeholder="cant a anular">
-                <input type="text" class="" name="cant_total_anular" id="cant_total_anular" placeholder="cant total">
+                <input type="text" class="d-none" name="id_anular" id="id_anular" placeholder="id de retiro a anular">
+                <input type="text" class="d-none" name="id_anular_art" id="id_anular_art" placeholder="id de art a anular">
+                <input type="text" class="d-none" name="cant_anular" id="cant_anular" placeholder="cant a anular">
+                <input type="text" class="d-none" name="cant_total_anular" id="cant_total_anular" placeholder="cant total">
             </div>
             <div class="modal-footer">
                 <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -323,10 +326,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <section class="my-4">
         <div class="container">
             <form action="" method="GET">
-                <?php
-                require_once 'db/conexion.php';
-                $result = mysqli_query($link, 'SELECT * FROM articulos')
-                ?>
                 <h1 class="text-left p-2 m-1 font-weigth-bold" style="font-size:calc(20px + 1.7vw);">Articulos</h1>
                 <div class="container py-2 mb-2">
                     <div class="row">
@@ -341,7 +340,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                     </div>
                                     <div class="col-8 justify-content-center">
                                         <a class="btn btn-primary" data-target="#modal_agregar" data-toggle="modal">Agregar nuevo</a>
-
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -363,8 +362,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                             <th scope="col"></th>
                         </tr>
                     </thead>
-                        <tbody>
-                            <?php
+                    <tbody>
+                        <?php
+                                $result = mysqli_query($link, 'SELECT * FROM articulos');
                                 while ($row = mysqli_fetch_array($result))
                                 {
                                     echo '<tr>'.
@@ -467,9 +467,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <section class="my-4">
         <div class="container ">
             <form action="" method="GET">
-                <?php
-                $result = mysqli_query($link, 'SELECT * FROM historial ORDER BY tmsp desc')
-                ?>
                 <h1 class="text-left p-2 m-1 font-weigth-bold" style="font-size:calc(20px + 1.7vw);">Historial</h1>
                 <div class="container py-2 mb-2">
                     <div class="row">
@@ -482,16 +479,20 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                 </div>
                 <section class="container barra" style="overflow-y: scroll; height:20rem">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Dia</th>
-                            <th scope="col">Accion</th>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Dia</th>
+                                <th scope="col">Accion</th>
                             <th scope="col">Articulo</th>
                         </tr>
                     </thead>
-                        <tbody>
-                            <?php
+                    <tbody>
+                        <?php
+                        $query = "SELECT * FROM historial";
+                        $result = mysqli_query($link, $query);
+                        print_r ($result);
+
                                 while ($row = mysqli_fetch_array($result))
                                 {
                                     echo '<tr>';
@@ -501,7 +502,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                     echo '</tr>';
     
                                 }
-                            ?>
+                        ?>
                         </tbody>
                     </table>
                 </section>
