@@ -266,6 +266,33 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
       </div>
     </div>
   </div>
+  
+  <!-- Modal anular retiro -->
+  <div class="modal fade" id="modal_anular" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form action="./controllers/anular_retiro.php" method="POST">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Anular retiro</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>¿Está seguro que desea anular este retiro?</h5>
+                <input type="text" class="" name="id_anular" id="id_anular" placeholder="id de retiro a anular">
+                <input type="text" class="" name="id_anular_art" id="id_anular_art" placeholder="id de art a anular">
+                <input type="text" class="" name="cant_anular" id="cant_anular" placeholder="cant a anular">
+                <input type="text" class="" name="cant_total_anular" id="cant_total_anular" placeholder="cant total">
+            </div>
+            <div class="modal-footer">
+                <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Confirmar</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
 <body class="barra bg-light">
     <header>
@@ -367,10 +394,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <section class="my-4">
         <div class="container ">
             <form action="" method="GET">
-                <?php
-                $query = "SELECT articulos.nombre, articulos.talla_forma, articulos.color, retiros.cantidad_retiro, retiros.cliente, retiros.fecha, usuarios.username FROM ((retiros inner join articulos  on retiros.id_producto = articulos.id) inner join usuarios on retiros.id_usuario = usuarios.id);";
-                $result = mysqli_query($link, $query);
-                ?>
                 <h1 class="text-left p-2 m-1 font-weigth-bold" style="font-size:calc(20px + 1.7vw);">Retiros</h1>
                 <div class="container py-2 mb-2">
                     <div class="row">
@@ -383,34 +406,52 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                 </div>
                 <section class="container barra" style="overflow-y: scroll; height:20rem">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Nombre de art.</th>
-                            <th scope="col">Talla o forma</th>
-                            <th scope="col">Color</th>
-                            <th scope="col">Cantidad</th>
-                            <th scope="col">Cliente</th>
-                            <th scope="col">Fecha</th>
-                            <th scope="col">Usuario</th>
-                            <th scope="col">Anular</th>
-                        </tr>
-                    </thead>
-                        <tbody>
-                            <?php
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre de art.</th>
+                                <th scope="col">Talla o forma</th>
+                                <th scope="col">Color</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Cliente</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Usuario</th>
+                                <th scope="col">Anulado</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                    <tbody>
+                        <?php
+                        $query = "CALL read_retiros()";
+                        $result = mysqli_query($link, $query);
                                 while ($row = mysqli_fetch_array($result))
                                 {
                                     echo '<tr>';
                                     echo "<th scope='col'>". $row["nombre"]."</th>";
                                     echo "<th scope='col'>". $row["talla_forma"]."</th>";
                                     echo "<th scope='col'>". $row["color"]."</th>";
-                                    echo "<th scope='col'>". $row["cantidad_retiro"]."</th>";
+                                    echo "<th scope='col' id=cantidad_retiro".$row["id_retiro"].">". $row["cantidad_retiro"]."</th>";
                                     echo "<th scope='col'>". $row["cliente"]."</th>";
                                     echo "<th scope='col'>". $row["fecha"]."</th>";
                                     echo "<th scope='col'>". $row["username"]."</th>";
-                                    echo "<th scope='col'> 
-                                        <input type='checkbox'> <span class='ml-3'><button class='btn btn-warning'>Anular</button></span>
-                                    </th>";
+                                    if($row["anular"] == 0){
+                                        $anular = "No";
+                                    }
+                                    else{
+                                        $anular = "Si";
+                                    }
+                                    echo "<th scope='col'>".$anular."</th>";
+
+                                    if($anular == "No"){
+                                        echo "<th scope='col'><a id=". $row['id_retiro']." data-toggle='modal' href='#modal_anular' class='btn btn-warning anular'>Anular</a></th>";
+                                    }
+                                    else{
+                                        echo "<th scope='col'><button disabled id=". $row['id_retiro']." data-toggle='modal' href='#modal_anular' class='btn btn-warning anular'>Anular</button></th>";
+                                    }
+                                    
+                                    echo "<th scope='col' class='d-none' id=id_retiro".$row["id_retiro"].">". $row["id_retiro"]."</th>";
+                                    echo "<th scope='col' class='d-none' id=id_articulo_retiro".$row["id_retiro"].">". $row["id"]."</th>";
+                                    echo "<th scope='col' class='d-none' id=cant_anular".$row["id_retiro"].">". $row["cantidad"]."</th>";
                                     echo '</tr>';
     
                                 }
