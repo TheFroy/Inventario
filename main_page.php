@@ -11,6 +11,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 require_once 'db/conexion.php';
 $search = "";
 
+$username = $_SESSION['username'];
+$query = "SELECT * FROM usuarios where username = '$username'";
+$res_user = mysqli_fetch_array(mysqli_query($link, $query));
 
 ?>
 
@@ -270,6 +273,56 @@ $search = "";
       </div>
     </div>
   </div>
+
+    <!-- Modal agregar usuario -->
+    <div class="modal fade" id="modal_add_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form action="./controllers/add_usuario.php" method="post">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Añadir usuario</h4>
+            </div>
+                <div class="modal-body">
+                <div class="container">
+                    <div class="row py-2">
+                                <div class="col-4">
+                                    <label for="">Nombre de usuario</label>
+                                </div>
+                                <div class="col-7">
+                                    <input type="text"  name="add_username" class="form-control" placeholder="user01">
+                                </div>
+                        </div>
+                        <div class="row py-2">
+                                <div class="col-4">
+                                    <label for="">Contraseña</label>
+                                </div>
+                                <div class="col-7">
+                                    <input type="text" name="add_pwd" class="form-control" placeholder="contraseña123">
+                                </div>
+                        </div>
+                        <div class="row py-2">
+                            <div class="col-4">
+                                <label for="">Rol del usuario</label>
+                            </div>
+                            <div class="col-7">
+                                <select type="text" name="add_rol" class="form-control" placeholder="contraseña123">
+                                    <option value="">...</option>
+                                    <option value="1">Administrador</option>
+                                    <option value="0">Empleado</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
   
   <!-- Modal anular retiro -->
   <div class="modal fade" id="modal_anular" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -315,6 +368,7 @@ $search = "";
                             </span>
                         </span>
                         <a href="logout.php" class="btn btn-danger ">Cerrar sesion</a>
+                        <a href="#modal_add_user" data-toggle="modal" class="btn">añadir usuario</a>
                     </section>
                 </div>
             </div>
@@ -349,7 +403,11 @@ $search = "";
                             }
                         ?>
                         <div class="col-md-3 col-sm-12  p-2">
-                            <a class="btn btn-primary" data-target="#modal_agregar" data-toggle="modal">Agregar nuevo</a>
+                            <?php
+                                if($res_user['adm'] == 1){
+                                    echo  "<a class='btn btn-primary' data-target='#modal_agregar' data-toggle='modal'>Agregar nuevo</a>";
+                                };
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -378,21 +436,25 @@ $search = "";
 
                             };
                             $result = mysqli_query($link, $query);
+                            
                                 while ($row = mysqli_fetch_array($result))
                                 {
                                     echo '<tr>'.
-                                        "<th class='d-none' id=nota" . $row['id'] .">" . $row['nota'] . "</th>".
-                                        "<th scope='col' id=id" . $row["id"].">". $row["id"]."</th>".
-                                        "<th scope='col' id=nombre" . $row["id"].">". $row["nombre"]."</th>".
-                                        "<th scope='col' id=color" . $row["id"].">". $row["color"]."</th>".
-                                        "<th scope='col' id=talla" . $row["id"].">". $row["talla_forma"]."</th>".
-                                        "<th scope='col' id=material" . $row["id"].">". $row["material"]."</th>".
-                                        "<th scope='col' id=cant" . $row["id"].">". $row["cantidad"]."</th>".
-                                        "<th scope='col'><a data-toggle='modal' href='#modal_editar'  id=".$row["id"]." class='btn btn-primary upd'>Editar</a></th>".
-                                        "<th scope='col'><a data-toggle='modal' data-target='#modal_retirar' id=".$row["id"]." class='btn btn-success ret'>Retirar</a></th>".
-                                        "<th scope='col'><a data-toggle='modal' data-target='#modal_borrar' id=".$row["id"]." class='btn btn-danger del'>Borrar</a></th>".
-                                        '</tr>';
-    
+                                    "<th class='d-none' id=nota" . $row['id'] .">" . $row['nota'] . "</th>".
+                                    "<th scope='col' id=id" . $row["id"].">". $row["id"]."</th>".
+                                    "<th scope='col' id=nombre" . $row["id"].">". $row["nombre"]."</th>".
+                                    "<th scope='col' id=color" . $row["id"].">". $row["color"]."</th>".
+                                    "<th scope='col' id=talla" . $row["id"].">". $row["talla_forma"]."</th>".
+                                    "<th scope='col' id=material" . $row["id"].">". $row["material"]."</th>".
+                                    "<th scope='col' id=cant" . $row["id"].">". $row["cantidad"]."</th>";
+                                    if($res_user['adm'] == 1){
+                                        echo "<th scope='col'><a data-toggle='modal' href='#modal_editar'  id=".$row["id"]." class='btn btn-primary upd'>Editar</a></th>";
+                                        echo "<th scope='col'><a data-toggle='modal' data-target='#modal_borrar' id=".$row["id"]." class='btn btn-danger del'>Borrar</a></th>";
+
+                                    };
+                                    echo "<th scope='col'><a data-toggle='modal' data-target='#modal_retirar' id=".$row["id"]." class='btn btn-success ret'>Retirar</a></th>".
+                                    '</tr>';
+                                    
                                 }
                             ?>
                         </tbody>
@@ -458,13 +520,15 @@ $search = "";
                                     echo "<th scope='col'>". $row["username"]."</th>";
 
                                     echo "<th scope='col'>".$row['estado']."</th>";
-
-                                    if($row['estado'] == "activo"){
-                                        echo "<th scope='col'><a id=". $row['id_retiro']." data-toggle='modal' href='#modal_anular' class='btn btn-warning anular'>Anular</a></th>";
-                                    }
-                                    else{
-                                        echo "<th scope='col'><button disabled id=". $row['id_retiro']." data-toggle='modal' href='#modal_anular' class='btn btn-warning anular'>Anular</button></th>";
-                                    }
+    
+                                    if($res_user['adm'] == 1){
+                                        if($row['estado'] == "activo"){
+                                            echo "<th scope='col'><a id=". $row['id_retiro']." data-toggle='modal' href='#modal_anular' class='btn btn-warning anular'>Anular</a></th>";
+                                        }
+                                        else{
+                                            echo "<th scope='col'><button disabled id=". $row['id_retiro']." data-toggle='modal' href='#modal_anular' class='btn btn-warning anular'>Anular</button></th>";
+                                        }
+                                    };
                                     
                                     echo "<th scope='col' class='d-none' id=id_retiro".$row["id_retiro"].">". $row["id_retiro"]."</th>";
                                     echo "<th scope='col' class='d-none' id=id_articulo_retiro".$row["id_retiro"].">". $row["id"]."</th>";
