@@ -11,22 +11,23 @@ $cantidad = $_POST['upd_cantidad'];
 $nota = $_POST['nota'];
 
 $query = "CALL upd_articulo($id, '$nombre', '$color', '$talla', '$material', $cantidad, '$nota')";
-$result = mysqli_query($link, $query);
+echo $query;
+// $result = mysqli_query($link, $query);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    echo ("<script>
-        window.alert('Se ha actualizado el articulo con éxito!');
-        window.location.href='../';
-        </script>");
+// if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+//     echo ("<script>
+//         window.alert('Se ha actualizado el articulo con éxito!');
+//         window.location.href='../';
+//         </script>");
     
-}
-else{
-    echo ("<script>
-    window.alert('Ocurrio un error!');
-    window.location.href='../';
-    </script>");
-}
+// }
+// else{
+//     echo ("<script>
+//     window.alert('Ocurrio un error!');
+//     window.location.href='../';
+//     </script>");
+// }
 
-mysqli_close($link);
+// mysqli_close($link);
 
 ?>

@@ -13,6 +13,7 @@ include './components/modal_retirar.php';
 include './components/modal_borrar.php';
 include './components/modal_editar.php';
 include './components/modal_anular_retiro.php';
+include './components/modal_agregar.php';
 
 $search = "";
 
