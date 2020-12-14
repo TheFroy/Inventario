@@ -9,6 +9,12 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 }
 
 require_once 'db/conexion.php';
+include './components/modal_retirar.php';
+include './components/modal_borrar.php';
+include './components/modal_editar.php';
+include './components/modal_add_user.php';
+include './components/modal_anular_retiro.php';
+
 $search = "";
 
 $username = $_SESSION['username'];
@@ -31,351 +37,38 @@ $res_user = mysqli_fetch_array(mysqli_query($link, $query));
 </head>
 
 
-<!-- Modal editar -->
-<div class="modal fade" id="modal_agregar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="exampleModalLabel">Añadir artículo</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true"></span>
-          </button>
-        </div>
-        <form action="./controllers/add_articulo.php" method="post">
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row py-2">
-                            <div class="col-4">
-                                <label for="">Nombre</label>
-                            </div>
-                            <div class="col-7">
-                                <input type="text"  name="add_nombre" class="form-control" name="nombre">
-                            </div>
-                    </div>
-
-                    <div class="row py-2">
-                            <div class="col-4">
-                                <label for="">Color</label>
-                            </div>
-                            <div class="col-7">
-                                <input type="text"  name="add_color" class="form-control" name="color">
-                            </div>
-                    </div>
-
-                    <div class="row py-2">
-                        <div class="col-4">
-                            <label for="">Talla o forma</label>
-                        </div>
-                        <div class="col-7">
-                            <input type="text"  name="add_talla" class="form-control" name="talla_forma">
-                        </div>
-                    </div>
-
-                    <div class="row py-2">
-                        <div class="col-4">
-                            <label for="">Material</label>
-                        </div>
-                        <div class="col-7">
-                            <input type="text"  name="add_material" class="form-control" name="Material">
-                        </div>
-                    </div>
-
-                    <div class="row py-2">
-                        <div class="col-4">
-                            <label for="">Cantidad</label>
-                        </div>
-                        <div class="col-7">
-                            <input type="number"  name="add_cantidad" class="form-control" name="cantidad">
-                        </div>
-                    </div>
-
-                    <div class="row py-2">
-                        <div class="col-4">
-                            <label for="">Nota</label>
-                        </div>
-                        <div class="col-7">
-                            <textarea type="text"  class="form-control" name="add_nota"></textarea>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="reset" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                <button type="submit"  class="btn btn-primary">Añadir producto</button>
-            </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  </div>
-
-<!-- Modal editar -->
-<div class="modal fade" id="modal_editar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="exampleModalLabel">Editar artículo</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true"></span>
-          </button>
-        </div>
-        <form action="./controllers/upd_articulo.php" method="post">
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row py-2">
-                            <div class="col-4">
-                                <label for="">ID de artículo</label>
-                            </div>
-                            <div class="col-7">
-                                <input type="text"  id="id_modal" name="upd_id" class="form-control" >
-                            </div>
-                    </div>
-                    <div class="row py-2">
-                            <div class="col-4">
-                                <label for="">Nombre</label>
-                            </div>
-                            <div class="col-7">
-                                <input type="text" id="nombre_modal" name="upd_nombre" class="form-control" name="nombre">
-                            </div>
-                    </div>
-
-                    <div class="row py-2">
-                            <div class="col-4">
-                                <label for="">Color</label>
-                            </div>
-                            <div class="col-7">
-                                <input type="text" id="color_modal" name="upd_color" class="form-control" name="color">
-                            </div>
-                    </div>
-
-                    <div class="row py-2">
-                        <div class="col-4">
-                            <label for="">Talla o forma</label>
-                        </div>
-                        <div class="col-7">
-                            <input type="text" id="talla_forma_modal" name="upd_talla" class="form-control" name="talla_forma">
-                        </div>
-                    </div>
-
-                    <div class="row py-2">
-                        <div class="col-4">
-                            <label for="">Material</label>
-                        </div>
-                        <div class="col-7">
-                            <input type="text" id="material_modal" name="upd_material" class="form-control" name="Material">
-                        </div>
-                    </div>
-
-                    <div class="row py-2">
-                        <div class="col-4">
-                            <label for="">Cantidad</label>
-                        </div>
-                        <div class="col-7">
-                            <input type="number" id="cantidad_modal" name="upd_cantidad" class="form-control" name="cantidad">
-                        </div>
-                    </div>
-
-                    <div class="row py-2">
-                        <div class="col-4">
-                            <label for="">Nota</label>
-                        </div>
-                        <div class="col-7">
-                            <textarea type="text" id="nota_modal" class="form-control" name="nota"></textarea>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="submit"  class="btn btn-primary">Guardar Cambios</button>
-            </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  </div>
-
-  <!-- Modal retirar -->
-<div class="modal fade" id="modal_retirar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="exampleModalLabel">Retirar artículo</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form action="./controllers/ret_articulo.php" method="post">
-            <div class="modal-body">
-                <div class="container">
-
-                    <div class="row py-2">
-                        <div class="col-4">
-                            <label for="">ID de producto</label>
-                        </div>
-                        <div class="col-7">
-                            <input type="text" class="form-control" id="id_retirar" name="id_retirar">
-                        </div>
-                    </div>
-                    
-                    <div class="row py-2">
-                        <div class="col-4">
-                            <label for="">Cantidad</label>
-                        </div>
-                        <div class="col-7">
-                            <input type="number" class="form-control" name="cant_retirar">
-                        </div>
-                    </div>
-                    
-                    <div class="row py-2">
-                        <div class="col-4">
-                            <label for="">Cliente</label>
-                        </div>
-                        <div class="col-7">
-                            <input type="text" class="form-control" name="cliente_retirar">
-                        </div>
-                    </div>
-                            <input class="d-none" type="text" class="form-control" name="cant_total" id="cant_total">
-                    
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="submit"  class="btn btn-primary">Realizar retiro</button>
-            </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal borrar -->
-  <div class="modal fade" id="modal_borrar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <form action="./controllers/del_articulo.php" method="post">
-            <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel">Borrar articulo</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h5>¿Está seguro que desea eliminar articulo?</h5>
-                <input type="text" class="d-none" name="id_delete" id="id_delete" placeholder="id a eliminar">
-            </div>
-            <div class="modal-footer">
-                <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary">Confirmar</button>
-            </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-    <!-- Modal agregar usuario -->
-    <div class="modal fade" id="modal_add_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <form action="./controllers/add_usuario.php" method="post">
-            <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel">Añadir usuario</h4>
-            </div>
-                <div class="modal-body">
-                <div class="container">
-                    <div class="row py-2">
-                                <div class="col-4">
-                                    <label for="">Nombre de usuario</label>
-                                </div>
-                                <div class="col-7">
-                                    <input type="text"  name="add_username" class="form-control" placeholder="user01">
-                                </div>
-                        </div>
-                        <div class="row py-2">
-                                <div class="col-4">
-                                    <label for="">Contraseña</label>
-                                </div>
-                                <div class="col-7">
-                                    <input type="text" name="add_pwd" class="form-control" placeholder="contraseña123">
-                                </div>
-                        </div>
-                        <div class="row py-2">
-                            <div class="col-4">
-                                <label for="">Rol del usuario</label>
-                            </div>
-                            <div class="col-7">
-                                <select type="text" name="add_rol" class="form-control" placeholder="contraseña123">
-                                    <option value="">...</option>
-                                    <option value="1">Administrador</option>
-                                    <option value="0">Empleado</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Confirmar</button>
-                </div>
-            </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Modal anular retiro -->
-  <div class="modal fade" id="modal_anular" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <form action="./controllers/anular_retiro.php" method="POST">
-            <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel">Anular retiro</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h5>¿Está seguro que desea anular este retiro?</h5>
-                <input type="text" class="d-none" name="id_anular" id="id_anular" placeholder="id de retiro a anular">
-                <input type="text" class="d-none" name="id_anular_art" id="id_anular_art" placeholder="id de art a anular">
-                <input type="text" class="d-none" name="cant_anular" id="cant_anular" placeholder="cant a anular">
-                <input type="text" class="d-none" name="cant_total_anular" id="cant_total_anular" placeholder="cant total">
-            </div>
-            <div class="modal-footer">
-                <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary">Confirmar</button>
-            </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-<body class="barra bg-light">
+<body class="barra">
     <header>
-        <div class="container-fluid text-center p-4 mb-4" style="background-color:lightgrey">
-            <div class="row">
-                <div class="col-6 text-left pl-4">
-                    <h1 class="font-weight-bold" style="font-size: calc(30px + 2.5vw);">Inventario</h1>
-                    <h1 class="" style="font-size: calc(25px + 2.0vw);">Star productions</h1>
-                </div>
-                <div class="col-6">
-                    <section class="p-2 mt-2 text-right">
-                        <span>
-                            <img src="./img/user.svg" class="rounded-circle " alt="" height="40">
-                            <span>
-                            <h3 class=" btn mx-1 p-2">Bienvenido, <?php print_r ($_SESSION["username"]); ?></h3>
-                            </span>
-                        </span>
-                        <a href="logout.php" class="btn btn-danger ">Cerrar sesion</a>
-                        <a href="#modal_add_user" data-toggle="modal" class="btn">añadir usuario</a>
-                    </section>
-                </div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="./main_page.php">Star Productions</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                    <a class="nav-link" href="./main_page.php">Inventario<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="./usuarios.php">usuarios</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <div class="container-fluid p-2 ">
+                      <span class="p-2">
+                        <img src="./img/user.svg" class="rounded-circle " alt="" height="30">
+                        <span>Hola, <?php echo htmlspecialchars($_SESSION["username"]); ?></span>
+                      </span>
+                      <!-- <a href="reset-password.php" class="btn btn-warning"></a> -->
+                      <a href="logout.php" class="btn btn-danger mr-1">Cerrar sesion</a>
+                      <a href="#modal_add_user" data-toggle="modal" class="btn">añadir usuario</a>
+                    </div>
+                  </form>
             </div>
-
+          </nav>
         </div>
     </header>
-
 
     <!--  -->
     <section class="my-4">
@@ -522,7 +215,7 @@ $res_user = mysqli_fetch_array(mysqli_query($link, $query));
                                     echo "<th scope='col'>".$row['estado']."</th>";
     
                                     if($res_user['adm'] == 1){
-                                        if($row['estado'] == "activo"){
+                                        if($row['estado'] == "Activo" || $row['estado'] == 'activo'){
                                             echo "<th scope='col'><a id=". $row['id_retiro']." data-toggle='modal' href='#modal_anular' class='btn btn-warning anular'>Anular</a></th>";
                                         }
                                         else{
@@ -580,9 +273,10 @@ $res_user = mysqli_fetch_array(mysqli_query($link, $query));
                             }
                             else{
                                 $query = "SELECT * FROM historial where tmsp like '%$search3%' or accion like '%$search3% or articulo like '%$search3% order by tmsp";
+                                echo $query;
                             };
-                            echo $query;
                             $res = mysqli_query($link, $query);
+                            print_r($res);
                                 while ($row = mysqli_fetch_array($res))
                                 {
                                     echo '<tr>';
