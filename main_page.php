@@ -12,7 +12,6 @@ require_once 'db/conexion.php';
 include './components/modal_retirar.php';
 include './components/modal_borrar.php';
 include './components/modal_editar.php';
-include './components/modal_add_user.php';
 include './components/modal_anular_retiro.php';
 
 $search = "";
@@ -48,11 +47,15 @@ $res_user = mysqli_fetch_array(mysqli_query($link, $query));
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                    <a class="nav-link" href="./main_page.php">Inventario<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="./main_page.php">Inventario<span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="./usuarios.php">usuarios</a>
-                    </li>
+                    <?php
+                    if($res_user['adm'] == 1){
+                        echo "<li class='nav-item'>".
+                            "<a class='nav-link' href='./usuarios.php'>usuarios</a>".
+                            "</li>";
+                    }
+                    ?>
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
                     <div class="container-fluid p-2 ">
@@ -62,7 +65,6 @@ $res_user = mysqli_fetch_array(mysqli_query($link, $query));
                       </span>
                       <!-- <a href="reset-password.php" class="btn btn-warning"></a> -->
                       <a href="logout.php" class="btn btn-danger mr-1">Cerrar sesion</a>
-                      <a href="#modal_add_user" data-toggle="modal" class="btn">añadir usuario</a>
                     </div>
                   </form>
             </div>
