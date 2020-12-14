@@ -9,6 +9,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 }
 
 require_once 'db/conexion.php';
+$search = "";
 
 
 ?>
@@ -325,25 +326,30 @@ require_once 'db/conexion.php';
     <!--  -->
     <section class="my-4">
         <div class="container">
-            <form action="" method="GET">
                 <h1 class="text-left p-2 m-1 font-weigth-bold" style="font-size:calc(20px + 1.7vw);">Articulos</h1>
                 <div class="container py-2 mb-2">
-                    <div class="row">
-                        <div class="col-md-7 col-sm-12 py-2">
-                            <input class="form-control" type="text" value="" placeholder="Nombre de articulo">
-                        </div>
-                        <div class="col-md-5 col-sm-12  p-2">
-                            <div class="container ">
-                                <div class="row justify-content-center">
-                                    <div class="col-4 ">
-                                        <button class="btn btn-danger">Buscar</button>
-                                    </div>
-                                    <div class="col-8 justify-content-center">
-                                        <a class="btn btn-primary" data-target="#modal_agregar" data-toggle="modal">Agregar nuevo</a>
-                                        
-                                    </div>
-                                </div>
+                    <div class="row justify-content-center">
+                        <div class="col-md-9 col-sm-12 py-2">
+                            <div class="container">
+                                <form method="GET" class="row">
+                                        <!-- <form action="" method="GET"> -->
+                                        <div class="col-8">
+                                            <input class="form-control" type="text" value="" name="search" placeholder="Nombre de articulo, color, talla, material">
+                                        </div>
+                                        <div class="col-4">
+                                            <button type="submit" class="btn btn-danger">Buscar</button>
+                                        </div>
+                                        <!-- </form> -->
+                                </form>
                             </div>
+                        </div>
+                        <?php
+                            if(isset($_GET['search'])){
+                                $search = $_GET['search'];
+                            }
+                        ?>
+                        <div class="col-md-3 col-sm-12  p-2">
+                            <a class="btn btn-primary" data-target="#modal_agregar" data-toggle="modal">Agregar nuevo</a>
                         </div>
                     </div>
                 </div>
@@ -364,7 +370,14 @@ require_once 'db/conexion.php';
                     </thead>
                     <tbody>
                         <?php
-                                $result = mysqli_query($link, 'SELECT * FROM articulos');
+                            if($search == ""){
+                                $query = 'SELECT * FROM articulos';
+                            }
+                            else{
+                                $query = "SELECT * from articulos WHERE nombre LIKE '%$search%' OR color LIKE '%$search%' OR talla_forma LIKE '%$search%' OR material LIKE '%$search%'";
+
+                            };
+                            $result = mysqli_query($link, $query);
                                 while ($row = mysqli_fetch_array($result))
                                 {
                                     echo '<tr>'.
@@ -385,25 +398,29 @@ require_once 'db/conexion.php';
                         </tbody>
                     </table>
                 </section>
-            </form>
         </div>
     </section>
 
     <!--  -->
 
     <section class="my-4">
-        <div class="container ">
-            <form action="" method="GET">
+        <div class="container">
                 <h1 class="text-left p-2 m-1 font-weigth-bold" style="font-size:calc(20px + 1.7vw);">Retiros</h1>
                 <div class="container py-2 mb-2">
-                    <div class="row">
+                    <form method="GET" class="row">
                         <div class="col-8">
-                            <input class="form-control" type="text" value="" placeholder="Fecha">
+                            <input class="form-control" name="search1" type="text" value="" placeholder="Fecha">
                         </div>
                         <div class="col-4">
-                            <button class="btn btn-danger">Buscar</button>
+                            <button type="submit" class="btn btn-danger">Buscar</button>
                         </div>
-                    </div>
+                    </form>
+                    <?php
+                    echo $_GET['search1'];
+                        if(isset($_GET['search1'])){
+                            $search = $_GET['search1'];
+                        }
+                    ?>
                 </div>
                 <section class="container barra" style="overflow-y: scroll; height:20rem">
                     <table class="table table-hover">
@@ -422,7 +439,13 @@ require_once 'db/conexion.php';
                         </thead>
                     <tbody>
                         <?php
-                        $query = "CALL read_retiros()";
+                        if($search == ""){
+                            $query = "CALL read_retiros()";
+                        }
+                        else{
+                            $query = "SELECT retiros.id_retiro, articulos.id, articulos.cantidad, articulos.nombre, articulos.talla_forma, articulos.color, retiros.cantidad_retiro, retiros.cliente, retiros.fecha, usuarios.username, retiros.anular FROM ((retiros inner join articulos  on retiros.id_producto = articulos.id) inner join usuarios on retiros.id_usuario = usuarios.id) WHERE fecha LIKE '%$search%' or username LIKE '%$search%' or cliente LIKE '%$search%' or nombre LIKE '%$search%' OR color LIKE '%$search%' OR talla_forma LIKE '%$search%' ORDER BY retiros.anular, retiros.fecha DESC ";
+                        }
+
                         $result = mysqli_query($link, $query);
                                 while ($row = mysqli_fetch_array($result))
                                 {
@@ -459,14 +482,12 @@ require_once 'db/conexion.php';
                         </tbody>
                     </table>
                 </section>
-            </form>
         </div>
     </section>
    
     <!--  -->
     <section class="my-4">
         <div class="container ">
-            <form action="" method="GET">
                 <h1 class="text-left p-2 m-1 font-weigth-bold" style="font-size:calc(20px + 1.7vw);">Historial</h1>
                 <div class="container py-2 mb-2">
                     <div class="row">
@@ -489,7 +510,7 @@ require_once 'db/conexion.php';
                     </thead>
                     <tbody>
                         <?php
-                        $query = "SELECT * FROM historial";
+                        $query = "SELECT * FROM historial order by tmsp desc";
                         $result = mysqli_query($link, $query);
                         print_r ($result);
 
@@ -506,7 +527,6 @@ require_once 'db/conexion.php';
                         </tbody>
                     </table>
                 </section>
-            </form>
         </div>
     </section>
     <script src="./js/anular.js"></script>
