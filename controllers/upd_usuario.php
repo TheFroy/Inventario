@@ -2,16 +2,18 @@
 
 require_once '../db/conexion.php';
 
-$username = $_POST['add_username'];
-$pwd = password_hash($_POST['add_pwd'],PASSWORD_DEFAULT);
-$rol = $_POST['add_rol'];
+$id = $_POST['upd_id_user'];
+$username = $_POST['upd_username'];
+// $pwd = password_hash($_POST['upd_pwd'],PASSWORD_DEFAULT);
+$rol = $_POST['upd_rol'];
 
-$query = "CALL add_usuario('$username', '$pwd', $rol)";
+$query = "update usuarios set username = '$username', adm = '$rol' where id = $id;";
+
 $result = mysqli_query($link, $query);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo ("<script>
-        window.alert('Se ha agregado el usuario con éxito!');
+        window.alert('Se ha actualizado el usuario con éxito!');
         window.location.href='../usuarios.php';
         </script>");
     
