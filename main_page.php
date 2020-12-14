@@ -416,9 +416,9 @@ $search = "";
                         </div>
                     </form>
                     <?php
-                    echo $_GET['search1'];
+                        $search1 = "";
                         if(isset($_GET['search1'])){
-                            $search = $_GET['search1'];
+                            $search1 = $_GET['search1'];
                         }
                     ?>
                 </div>
@@ -433,19 +433,18 @@ $search = "";
                                 <th scope="col">Cliente</th>
                                 <th scope="col">Fecha</th>
                                 <th scope="col">Usuario</th>
-                                <th scope="col">Anulado</th>
+                                <th scope="col">Estado</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
                     <tbody>
                         <?php
-                        if($search == ""){
+                        if($search1 == ""){
                             $query = "CALL read_retiros()";
                         }
                         else{
-                            $query = "SELECT retiros.id_retiro, articulos.id, articulos.cantidad, articulos.nombre, articulos.talla_forma, articulos.color, retiros.cantidad_retiro, retiros.cliente, retiros.fecha, usuarios.username, retiros.anular FROM ((retiros inner join articulos  on retiros.id_producto = articulos.id) inner join usuarios on retiros.id_usuario = usuarios.id) WHERE fecha LIKE '%$search%' or username LIKE '%$search%' or cliente LIKE '%$search%' or nombre LIKE '%$search%' OR color LIKE '%$search%' OR talla_forma LIKE '%$search%' ORDER BY retiros.anular, retiros.fecha DESC ";
+                            $query = "SELECT retiros.id_retiro, articulos.id, articulos.cantidad, articulos.nombre, articulos.talla_forma, articulos.color, retiros.cantidad_retiro, retiros.cliente, retiros.fecha, usuarios.username,retiros.estado FROM ((retiros inner join articulos  on retiros.id_producto = articulos.id) inner join usuarios on retiros.id_usuario = usuarios.id) WHERE fecha LIKE '%$search1%' or username LIKE '%$search1%' or cliente LIKE '%$search1%' or nombre LIKE '%$search1%' OR color LIKE '%$search1%' OR talla_forma LIKE '%$search1%' OR estado like '%$search1%' ORDER BY retiros.estado, retiros.fecha DESC ";
                         }
-
                         $result = mysqli_query($link, $query);
                                 while ($row = mysqli_fetch_array($result))
                                 {
@@ -457,15 +456,10 @@ $search = "";
                                     echo "<th scope='col'>". $row["cliente"]."</th>";
                                     echo "<th scope='col'>". $row["fecha"]."</th>";
                                     echo "<th scope='col'>". $row["username"]."</th>";
-                                    if($row["anular"] == 0){
-                                        $anular = "No";
-                                    }
-                                    else{
-                                        $anular = "Si";
-                                    }
-                                    echo "<th scope='col'>".$anular."</th>";
 
-                                    if($anular == "No"){
+                                    echo "<th scope='col'>".$row['estado']."</th>";
+
+                                    if($row['estado'] == "activo"){
                                         echo "<th scope='col'><a id=". $row['id_retiro']." data-toggle='modal' href='#modal_anular' class='btn btn-warning anular'>Anular</a></th>";
                                     }
                                     else{
@@ -490,14 +484,20 @@ $search = "";
         <div class="container ">
                 <h1 class="text-left p-2 m-1 font-weigth-bold" style="font-size:calc(20px + 1.7vw);">Historial</h1>
                 <div class="container py-2 mb-2">
-                    <div class="row">
+                    <form method='GET' class="row">
                         <div class="col-8">
-                            <input class="form-control" type="text" value="" placeholder="Fecha">
+                            <input class="form-control" name="search3" type="text" value="" placeholder="Fecha">
                         </div>
                         <div class="col-4">
                             <button class="btn btn-danger">Buscar</button>
                         </div>
-                    </div>
+                    </form>
+                    <?php
+                    $search3 ="";
+                        if(isset($_GET['search3'])){
+                            $search3 = $_GET['search3'];
+                        }
+                    ?>
                 </div>
                 <section class="container barra" style="overflow-y: scroll; height:20rem">
                     <table class="table table-hover">
@@ -505,25 +505,31 @@ $search = "";
                             <tr>
                                 <th scope="col">Dia</th>
                                 <th scope="col">Accion</th>
-                            <th scope="col">Articulo</th>
+                                <th scope="col">Articulo</th>
+                                <th scope="col">ID de articulo</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                        $query = "SELECT * FROM historial order by tmsp desc";
-                        $result = mysqli_query($link, $query);
-                        print_r ($result);
-
-                                while ($row = mysqli_fetch_array($result))
+                            <?php
+                            if($search3 == ""){
+                                $query = "SELECT * FROM historial order by tmsp desc;";
+                            }
+                            else{
+                                $query = "SELECT * FROM historial where tmsp like '%$search3%' or accion like '%$search3% or articulo like '%$search3% order by tmsp";
+                            };
+                            echo $query;
+                            $res = mysqli_query($link, $query);
+                                while ($row = mysqli_fetch_array($res))
                                 {
                                     echo '<tr>';
                                     echo "<th scope='col'>". $row["tmsp"]."</th>";
                                     echo "<th scope='col'>". $row["accion"]."</th>";
                                     echo "<th scope='col'>". $row["articulo"]."</th>";
+                                    echo "<th scope='col'>". $row["id_articulo"]."</th>";
                                     echo '</tr>';
     
                                 }
-                        ?>
+                            ?>
                         </tbody>
                     </table>
                 </section>
