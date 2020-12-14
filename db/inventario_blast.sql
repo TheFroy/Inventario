@@ -19,16 +19,16 @@ USE `inventario_blast`;
 -- Volcando estructura para procedimiento inventario_blast.add_retiro
 DELIMITER //
 CREATE PROCEDURE `add_retiro`(
-	IN `_id` INT,
+	IN `id_prod` INT,
 	IN `_cant` INT,
 	IN `_cliente` VARCHAR(30),
-	IN `_user` VARCHAR(15),
+	IN `_username` VARCHAR(15),
 	IN `_cant_nueva` INT,
 	IN `user_id` INT
 )
 BEGIN
-INSERT INTO retiros (id_producto, cantidad_retiro, cliente, id_usuario, nom_usuario) VALUES(_id,_cant,_cliente,_user,user_id);
-UPDATE articulos SET cantidad = _cant_nueva WHERE id = _id;
+INSERT INTO retiros (id_producto, cantidad_retiro, cliente, nom_usuario, id_usuario) VALUES(id_prod,_cant,_cliente,_username,user_id);
+UPDATE articulos SET cantidad = _cant_nueva WHERE id = id_prod;
 END//
 DELIMITER ;
 
@@ -58,18 +58,17 @@ CREATE TABLE IF NOT EXISTS `articulos` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla inventario_blast.articulos: ~9 rows (aproximadamente)
+-- Volcando datos para la tabla inventario_blast.articulos: ~8 rows (aproximadamente)
 /*!40000 ALTER TABLE `articulos` DISABLE KEYS */;
 INSERT INTO `articulos` (`id`, `nombre`, `color`, `talla_forma`, `material`, `cantidad`, `nota`, `tmsp`) VALUES
-	(1, 'camiseta', 'rojo', 'M', 'polyester', 65, 'test nuevo', '2020-12-11 14:42:29'),
+	(1, 'camiseta', 'rojo', 'M', 'polyester', 172, 'test nuevo', '2020-12-12 16:46:31'),
 	(3, 'Sueter', 'blanco', 'L', '65% Polyester', 666, '', '2020-12-12 09:50:43'),
 	(4, 'Sueter', 'blanco', 'M', '65% Polyester', 84, NULL, '2020-12-12 10:04:34'),
 	(5, 'Sueter', 'blanco', 'S', '65% Polyester', 74, NULL, '2020-12-11 11:45:42'),
-	(6, 'Sueter', 'blanco', 'XL', '65% Polyester', 94, NULL, '2020-12-04 16:38:30'),
+	(6, 'Sueter', 'blanco', 'XL', '65% Polyester', 99, NULL, '2020-12-12 16:46:04'),
 	(7, 'Sueter', 'gris', 'XL', '65% Polyester', 35, NULL, '2020-12-11 11:29:20'),
 	(8, 'Sueter', 'gris', 'L', '65% Polyester', 80, NULL, '2020-12-07 11:49:40'),
-	(9, 'Sueter', 'gris', 'M', '65% Polyester', 89, NULL, '2020-12-04 16:44:43'),
-	(10, 'Taza', 'Blanca', '', '', 18, '', '2020-12-11 14:29:10');
+	(9, 'Sueter', 'gris', 'M', '65% Polyester', 89, NULL, '2020-12-04 16:44:43');
 /*!40000 ALTER TABLE `articulos` ENABLE KEYS */;
 
 -- Volcando estructura para procedimiento inventario_blast.del_articulo
@@ -89,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `historial` (
   `articulo` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla inventario_blast.historial: ~29 rows (aproximadamente)
+-- Volcando datos para la tabla inventario_blast.historial: ~50 rows (aproximadamente)
 /*!40000 ALTER TABLE `historial` DISABLE KEYS */;
 INSERT INTO `historial` (`tmsp`, `accion`, `articulo`) VALUES
 	('2020-12-04 16:29:53', 'UPDATE', NULL),
@@ -134,13 +133,20 @@ INSERT INTO `historial` (`tmsp`, `accion`, `articulo`) VALUES
 	('2020-12-11 14:42:29', 'UPDATE', 'camiseta'),
 	('2020-12-11 14:43:07', 'DELETE', 'Camisetas'),
 	('2020-12-12 09:50:43', 'UPDATE', 'Sueter'),
-	('2020-12-12 10:04:34', 'UPDATE', 'Sueter');
+	('2020-12-12 10:04:34', 'UPDATE', 'Sueter'),
+	('2020-12-12 10:49:05', 'UPDATE', 'camiseta'),
+	('2020-12-12 10:49:51', 'UPDATE', 'camiseta'),
+	('2020-12-12 10:49:57', 'UPDATE', 'camiseta'),
+	('2020-12-12 10:51:01', 'UPDATE', 'camiseta'),
+	('2020-12-12 16:46:04', 'UPDATE', 'Sueter'),
+	('2020-12-12 16:46:31', 'UPDATE', 'camiseta'),
+	('2020-12-14 08:16:54', 'DELETE', 'Taza');
 /*!40000 ALTER TABLE `historial` ENABLE KEYS */;
 
 -- Volcando estructura para procedimiento inventario_blast.read_retiros
 DELIMITER //
 CREATE PROCEDURE `read_retiros`()
-SELECT retiros.id_retiro, articulos.id, articulos.cantidad, articulos.nombre, articulos.talla_forma, articulos.color, retiros.cantidad_retiro, retiros.cliente, retiros.fecha, usuarios.username, retiros.anular FROM ((retiros inner join articulos  on retiros.id_producto = articulos.id) inner join usuarios on retiros.id_usuario = usuarios.id) ORDER BY retiros.anular//
+SELECT retiros.id_retiro, articulos.id, articulos.cantidad, articulos.nombre, articulos.talla_forma, articulos.color, retiros.cantidad_retiro, retiros.cliente, retiros.fecha, usuarios.username, retiros.anular FROM ((retiros inner join articulos  on retiros.id_producto = articulos.id) inner join usuarios on retiros.id_usuario = usuarios.id) ORDER BY retiros.anular, retiros.fecha DESC//
 DELIMITER ;
 
 -- Volcando estructura para tabla inventario_blast.retiros
@@ -158,18 +164,22 @@ CREATE TABLE IF NOT EXISTS `retiros` (
   KEY `id_usuario` (`id_usuario`),
   CONSTRAINT `retiros_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `articulos` (`id`),
   CONSTRAINT `retiros_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla inventario_blast.retiros: ~4 rows (aproximadamente)
+-- Volcando datos para la tabla inventario_blast.retiros: ~11 rows (aproximadamente)
 /*!40000 ALTER TABLE `retiros` DISABLE KEYS */;
 INSERT INTO `retiros` (`id_retiro`, `id_producto`, `cantidad_retiro`, `cliente`, `id_usuario`, `anular`, `fecha`, `nom_usuario`) VALUES
 	(1, 4, 4, 'Banistmo', 1, 1, '2020-12-05 15:42:14', ''),
-	(2, 6, 5, 'BBrands', 1, 0, '2020-12-05 16:05:55', ''),
+	(2, 6, 5, 'BBrands', 1, 1, '2020-12-05 16:05:55', ''),
 	(3, 1, 2, '', 1, 1, '2020-12-07 14:29:57', 'root'),
 	(4, 1, 4, 'rodelag', 1, 0, '2020-12-11 11:09:44', 'root'),
 	(5, 1, 5, 'TVN', 1, 0, '2020-12-11 11:50:11', '1'),
 	(6, 4, 7, 'pruebas', 1, 0, '2020-12-11 13:28:53', '1'),
-	(7, 1, 5, 'test', 1, 0, '2020-12-12 09:05:04', 'root');
+	(7, 1, 5, 'test', 1, 0, '2020-12-12 09:05:04', 'root'),
+	(9, 1, 6, 'test', 1, 0, '2020-12-12 10:45:25', '1'),
+	(10, 1, 42, 'test 3', 1, 1, '2020-12-12 10:48:40', 'root'),
+	(11, 1, 42, 'test 3', 1, 1, '2020-12-12 10:49:05', 'root'),
+	(12, 1, 2, 'test cliente', 1, 1, '2020-12-12 10:51:01', 'root');
 /*!40000 ALTER TABLE `retiros` ENABLE KEYS */;
 
 -- Volcando estructura para procedimiento inventario_blast.upd_articulo
@@ -196,7 +206,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla inventario_blast.usuarios: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla inventario_blast.usuarios: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
 INSERT INTO `usuarios` (`id`, `username`, `password`) VALUES
 	(1, 'root', _binary 0x243279243130246F386F4F3444764F4779356679306F5539723254444F44737449794E6876426C4142737732427559794A4D4E4B6854424349655969);
