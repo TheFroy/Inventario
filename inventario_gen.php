@@ -25,7 +25,7 @@ function getTable($cod){
         echo "<th scope='col'class='d-none' id='modelo".$row['id']."'>". $row["modelo"]."</th>";
         echo "<th scope='col' class='d-none' id='desc".$row['id']."'>". $row["descripcion"]."</th>";
         echo "<th scope='col' id='cant".$row['id']."'>". $row["cantidad"]."</th>";
-        echo "<th scope='col' id='precio".$row['id']."'>B\.". $row["precio"]."</th>";
+        echo "<th scope='col' id='precio".$row['id']."'>". $row["precio"]."</th>";
         echo "<th scope='col' class='d-none' id='ofi".$row['id']."'>". $row["id_oficina"]."</th>";
         echo "<th scope='col'>". $row["total"]."</th>";
         echo "<th scope='col'><a data-toggle='modal' data-target='#modal_upd_nart' id=".$row["id"]." class='btn btn-info info-nart'>+info</a></th>";
@@ -100,14 +100,30 @@ include './components/modal_add_nart.php';
 <!--  -->
 
     <div class="container-fluid p-3 ">
-        <a class="btn btn-primary" data-toggle="modal" data-target="#modal_add_nart">añadir articulo</a>
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                    <a class="btn btn-primary " data-toggle="modal" data-target="#modal_add_nart">añadir articulo</a>
+                </div>
+                <div class="col-9">
+                    <h4>Total de inventario: B\. 
+                        <?php
+                            require_once './db/conexion.php';
+                            $query = "select sum(cantidad*precio) as total from articulos_oficina";
+                            $row = mysqli_fetch_array(mysqli_query($link, $query));
+                            echo $row['total'];
+                        ?>
+                    </h4>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="accordion">
         <div class="card">
             <div  class="card-header mb-0 text-left" >
             <h3 class="font-weight-bold" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" id="headingOne"><?php getOficina(1); ?></h3>
             <div id="collapseOne" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
-                <div class="card-body">
+                <div class="py-2">
                     <section class="">
                         <div class="container-fluid">
                                 <!-- <h1 class="text-left p-2 m-1 font-weigth-bold" style="font-size:calc(20px + 1.7vw);">Estudio #2</h1> -->
@@ -142,7 +158,7 @@ include './components/modal_add_nart.php';
             <div  class="card-header mb-0 text-left">
             <h3 class="font-weight-bold" data-toggle="collapse" data-target="#collapsetwo" aria-expanded="true" aria-controls="collapseOne" id="headingOne"><?php getOficina(2); ?></h3>
             <div id="collapsetwo" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
-                <div class="card-body">
+                <div class="py-2">
                     <section class="">
                         <div class="container">
                                 <section class="container barra" style="overflow-y: scroll; height:20rem">
@@ -176,7 +192,7 @@ include './components/modal_add_nart.php';
             <div  class="card-header mb-0 text-left">
             <h3 class="font-weight-bold" data-toggle="collapse" data-target="#collapse3" aria-expanded="true" aria-controls="collapseOne" id="headingOne"><?php getOficina(3); ?></h3>
             <div id="collapse3" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
-                <div class="card-body">
+                <div class="py-2">
                     <section class="">
                         <div class="container">
                                 <section class="container barra" style="overflow-y: scroll; height:20rem">
@@ -210,7 +226,7 @@ include './components/modal_add_nart.php';
             <div  class="card-header mb-0 text-left" >
             <h3 class="font-weight-bold" data-toggle="collapse" data-target="#collapse4" aria-expanded="true" aria-controls="collapseOne" id="headingOne"><?php getOficina(4); ?></h3>
             <div id="collapse4" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
-                <div class="card-body">
+                <div class="py-2">
                     <section class="">
                         <div class="container">
                                 <section class="container barra" style="overflow-y: scroll; height:20rem">
@@ -244,7 +260,7 @@ include './components/modal_add_nart.php';
             <div  class="card-header mb-0 text-left" >
             <h3 class="font-weight-bold" data-toggle="collapse" data-target="#collapse5" aria-expanded="true" aria-controls="collapseOne" id="headingOne"><?php getOficina(5); ?></h3>
             <div id="collapse5" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
-                <div class="card-body">
+                <div class="py-2">
                     <section class="">
                         <div class="container">
                                 <section class="container barra" style="overflow-y: scroll; height:20rem">
@@ -278,7 +294,7 @@ include './components/modal_add_nart.php';
             <div  class="card-header mb-0 text-left" >
             <h3 class="font-weight-bold" data-toggle="collapse" data-target="#collapse6" aria-expanded="true" aria-controls="collapseOne" id="headingOne"><?php getOficina(6); ?></h3>
             <div id="collapse6" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
-                <div class="card-body">
+                <div class="py-2">
                     <section class="">
                         <div class="container">
                                 <section class="container barra" style="overflow-y: scroll; height:20rem">
@@ -312,7 +328,7 @@ include './components/modal_add_nart.php';
             <div  class="card-header mb-0 text-left" >
             <h3 class="font-weight-bold" data-toggle="collapse" data-target="#collapse7" aria-expanded="true" aria-controls="collapseOne" id="headingOne"><?php getOficina(7); ?></h3>
             <div id="collapse7" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
-                <div class="card-body">
+                <div class="py-2">
                     <section class="">
                         <div class="container">
                                 <section class="container barra" style="overflow-y: scroll; height:20rem">
@@ -346,7 +362,7 @@ include './components/modal_add_nart.php';
             <div  class="card-header mb-0 text-left" >
             <h3 class="font-weight-bold" data-toggle="collapse" data-target="#collapse8" aria-expanded="true" aria-controls="collapseOne" id="headingOne"><?php getOficina(8); ?></h3>
             <div id="collapse8" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
-                <div class="card-body">
+                <div class="py-2">
                     <section class="">
                         <div class="container">
                                 <section class="container barra" style="overflow-y: scroll; height:20rem">
@@ -380,7 +396,7 @@ include './components/modal_add_nart.php';
             <div  class="card-header mb-0 text-left" >
             <h3 class="font-weight-bold" data-toggle="collapse" data-target="#collapse9" aria-expanded="true" aria-controls="collapseOne" id="headingOne"><?php getOficina(9); ?></h3>
             <div id="collapse9" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
-                <div class="card-body">
+                <div class="py-2">
                     <section class="">
                         <div class="container">
                                 <section class="container barra" style="overflow-y: scroll; height:20rem">
@@ -414,7 +430,7 @@ include './components/modal_add_nart.php';
             <div  class="card-header mb-0 text-left" >
             <h3 class="font-weight-bold" data-toggle="collapse" data-target="#collapse10" aria-expanded="true" aria-controls="collapseOne" id="headingOne"><?php getOficina(10); ?></h3>
             <div id="collapse10" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
-                <div class="card-body">
+                <div class="py-2">
                     <section class="">
                         <div class="container">
                                 <section class="container barra" style="overflow-y: scroll; height:20rem">
@@ -448,7 +464,7 @@ include './components/modal_add_nart.php';
             <div  class="card-header mb-0 text-left" >
             <h3 class="font-weight-bold" data-toggle="collapse" data-target="#collapse11" aria-expanded="true" aria-controls="collapseOne" id="headingOne"><?php getOficina(11); ?></h3>
             <div id="collapse11" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
-                <div class="card-body">
+                <div class="py-2">
                     <section class="">
                         <div class="container">
                                 <section class="container barra" style="overflow-y: scroll; height:20rem">
@@ -482,7 +498,7 @@ include './components/modal_add_nart.php';
             <div  class="card-header mb-0 text-left" >
             <h3 class="font-weight-bold" data-toggle="collapse" data-target="#collapse12" aria-expanded="true" aria-controls="collapseOne" id="headingOne"><?php getOficina(12); ?></h3>
             <div id="collapse12" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
-                <div class="card-body">
+                <div class="py-2">
                     <section class="">
                         <div class="container">
                                 <section class="container barra" style="overflow-y: scroll; height:20rem">

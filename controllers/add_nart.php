@@ -14,16 +14,16 @@ $query = "INSERT INTO articulos_oficina (nombre, marca, modelo, descripcion, can
 $result = mysqli_query($link, $query);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // window.location.href='../inventario_gen.php';
     echo ("<script>
     window.alert('Se ha actualizado el articulo con éxito!');
+    window.location.href='../inventario_gen.php';
         </script>");
     
 }
 else{
-    // window.location.href='../inventario_gen.php';
     echo ("<script>
     window.alert('Ocurrio un error!');
+    window.location.href='../inventario_gen.php';
     </script>");
 }
 
