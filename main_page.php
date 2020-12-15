@@ -48,12 +48,15 @@ $res_user = mysqli_fetch_array(mysqli_query($link, $query));
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="./main_page.php">Inventario<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="./main_page.php">Inventario de sublimacion<span class="sr-only">(current)</span></a>
                     </li>
                     <?php
                     if($res_user['adm'] == 1){
                         echo "<li class='nav-item'>".
                             "<a class='nav-link' href='./usuarios.php'>usuarios</a>".
+                            "</li>".
+                            "<li class='nav-item'>".
+                            "<a class='nav-link' href='./inventario_gen.php'>inventario general</a>".
                             "</li>";
                     }
                     ?>
@@ -158,8 +161,6 @@ $res_user = mysqli_fetch_array(mysqli_query($link, $query));
                 </section>
         </div>
     </section>
-
-    <!--  -->
 
     <section class="my-4">
         <div class="container">

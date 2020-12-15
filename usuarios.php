@@ -15,9 +15,9 @@ include './components/modal_upd_usuario.php';
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="eS">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv=”Content-Type” content=”text/html; charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventario</title>
     <link rel="stylesheet" href="style.css">
@@ -37,10 +37,13 @@ include './components/modal_upd_usuario.php';
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item ">
-                    <a class="nav-link" href="./main_page.php">Inventario<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="./main_page.php">Inventario de sublimacion<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item active">
                     <a class="nav-link" href="./usuarios.php">usuarios</a>
+                    </li>
+                    <li class="nav-item ">
+                    <a class="nav-link" href="./inventario_gen.php">inventario general</a>
                     </li>
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
