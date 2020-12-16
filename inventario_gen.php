@@ -147,42 +147,7 @@ include './components/modal_add_nart.php';
         </div>
     </div>
 
-    <div id="accordion">
-        <div class="card">
-            <div  class="card-header mb-0 text-left" >
-            <h3 class="font-weight-bold" data-toggle="collapse" data-target="#collapseall" aria-expanded="true" aria-controls="collapseOne" id="headingOne">Ver todo</h3>
-            <div id="collapseall" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
-                <div class="py-2">
-                    <section class="">
-                        <div class="container-fluid">
-                                <!-- <h1 class="text-left p-2 m-1 font-weigth-bold" style="font-size:calc(20px + 1.7vw);">Estudio #2</h1> -->
-                                <section class="container barra" style="overflow-y: scroll; height:20rem">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <!-- <th scope="col">ID</th> -->
-                                                <th scope="col">Nombre</th>
-                                                <th scope="col">Marca</th>
-                                                <!-- <th scope="col">Modelo</th> -->
-                                                <!-- <th scope="col">Descripcion</th> -->
-                                                <th scope="col">Cantidad</th>
-                                                <th scope="col">Oficina</th>
-                                                <th scope="col">Precio Uni.</th>
-                                                <th scope="col">Total</th>
-                                                <th scope="col"></th>
-                                                <th scope="col"></th>
-                                                <th scope="col"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody><?php getTableAll();?></tbody>
-                                    </table>
-                                </section>
-                        </div>
-                    </section>
-                </div>
-            </div>
-        </div>
-        </div>
+    
 
     <div id="accordion">
         <div class="card">
