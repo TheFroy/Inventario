@@ -161,6 +161,7 @@ $res_user = mysqli_fetch_array(mysqli_query($link, $query));
                 </section>
         </div>
     </section>
+    
 
     <section class="my-4">
         <div class="container">
@@ -168,7 +169,7 @@ $res_user = mysqli_fetch_array(mysqli_query($link, $query));
                 <div class="container py-2 mb-2">
                     <form method="GET" class="row">
                         <div class="col-8">
-                            <input class="form-control" name="search1" type="text" value="" placeholder="Fecha">
+                            <input class="form-control" name="search1" type="text" value="" placeholder="Fecha, usuario, cliente, articulo, estado">
                         </div>
                         <div class="col-4">
                             <button type="submit" class="btn btn-danger">Buscar</button>
@@ -198,39 +199,39 @@ $res_user = mysqli_fetch_array(mysqli_query($link, $query));
                         </thead>
                     <tbody>
                         <?php
-                        if($search1 == ""){
+                            if($search1 == ""){
+                            }
+                            else{
+                                $query = "SELECT retiros.id_retiro, articulos.id, articulos.cantidad, articulos.nombre, articulos.talla_forma, articulos.color, retiros.cantidad_retiro, retiros.cliente, retiros.fecha, usuarios.username,retiros.estado FROM ((retiros inner join articulos  on retiros.id_producto = articulos.id) inner join usuarios on retiros.id_usuario = usuarios.id) WHERE fecha LIKE '%$search1%' or username LIKE '%$search1%' or cliente LIKE '%$search1%' or nombre LIKE '%$search1%' OR color LIKE '%$search1%' OR talla_forma LIKE '%$search1%' OR estado like '%$search1%' ORDER BY retiros.estado, retiros.fecha DESC ";
+                            }
                             $query = "CALL read_retiros()";
-                        }
-                        else{
-                            $query = "SELECT retiros.id_retiro, articulos.id, articulos.cantidad, articulos.nombre, articulos.talla_forma, articulos.color, retiros.cantidad_retiro, retiros.cliente, retiros.fecha, usuarios.username,retiros.estado FROM ((retiros inner join articulos  on retiros.id_producto = articulos.id) inner join usuarios on retiros.id_usuario = usuarios.id) WHERE fecha LIKE '%$search1%' or username LIKE '%$search1%' or cliente LIKE '%$search1%' or nombre LIKE '%$search1%' OR color LIKE '%$search1%' OR talla_forma LIKE '%$search1%' OR estado like '%$search1%' ORDER BY retiros.estado, retiros.fecha DESC ";
-                        }
-                        $result = mysqli_query($link, $query);
-                                while ($row = mysqli_fetch_array($result))
-                                {
-                                    echo '<tr>';
-                                    echo "<th scope='col'>". $row["nombre"]."</th>";
-                                    echo "<th scope='col'>". $row["talla_forma"]."</th>";
-                                    echo "<th scope='col'>". $row["color"]."</th>";
-                                    echo "<th scope='col' id=cantidad_retiro".$row["id_retiro"].">". $row["cantidad_retiro"]."</th>";
-                                    echo "<th scope='col'>". $row["cliente"]."</th>";
-                                    echo "<th scope='col'>". $row["fecha"]."</th>";
-                                    echo "<th scope='col'>". $row["username"]."</th>";
+                            $result = mysqli_query($link, $query);
+                            while ($row = mysqli_fetch_array($result))
+                            {
+                                echo '<tr>';
+                                echo "<th scope='col'>". $row["nombre"]."</th>";
+                                echo "<th scope='col'>". $row["talla_forma"]."</th>";
+                                echo "<th scope='col'>". $row["color"]."</th>";
+                                echo "<th scope='col' id=cantidad_retiro".$row["id_retiro"].">". $row["cantidad_retiro"]."</th>";
+                                echo "<th scope='col'>". $row["cliente"]."</th>";
+                                echo "<th scope='col'>". $row["fecha"]."</th>";
+                                echo "<th scope='col'>". $row["username"]."</th>";
 
-                                    echo "<th scope='col'>".$row['estado']."</th>";
-    
-                                    if($res_user['adm'] == 1){
-                                        if($row['estado'] == "Activo" || $row['estado'] == 'activo'){
-                                            echo "<th scope='col'><a id=". $row['id_retiro']." data-toggle='modal' href='#modal_anular' class='btn btn-warning anular'>Anular</a></th>";
-                                        }
-                                        else{
-                                            echo "<th scope='col'><button disabled id=". $row['id_retiro']." data-toggle='modal' href='#modal_anular' class='btn btn-warning anular'>Anular</button></th>";
-                                        }
-                                    };
-                                    
-                                    echo "<th scope='col' class='d-none' id=id_retiro".$row["id_retiro"].">". $row["id_retiro"]."</th>";
-                                    echo "<th scope='col' class='d-none' id=id_articulo_retiro".$row["id_retiro"].">". $row["id"]."</th>";
-                                    echo "<th scope='col' class='d-none' id=cant_anular".$row["id_retiro"].">". $row["cantidad"]."</th>";
-                                    echo '</tr>';
+                                echo "<th scope='col'>".$row['estado']."</th>";
+
+                                if($res_user['adm'] == 1){
+                                    if($row['estado'] == "Activo" || $row['estado'] == 'activo'){
+                                        echo "<th scope='col'><a id=". $row['id_retiro']." data-toggle='modal' href='#modal_anular' class='btn btn-warning anular'>Anular</a></th>";
+                                    }
+                                    else{
+                                        echo "<th scope='col'><button disabled id=". $row['id_retiro']." data-toggle='modal' href='#modal_anular' class='btn btn-warning anular'>Anular</button></th>";
+                                    }
+                                };
+                                
+                                echo "<th scope='col' class='d-none' id=id_retiro".$row["id_retiro"].">". $row["id_retiro"]."</th>";
+                                echo "<th scope='col' class='d-none' id=id_articulo_retiro".$row["id_retiro"].">". $row["id"]."</th>";
+                                echo "<th scope='col' class='d-none' id=cant_anular".$row["id_retiro"].">". $row["cantidad"]."</th>";
+                                echo '</tr>';
     
                                 }
                             ?>
@@ -241,62 +242,6 @@ $res_user = mysqli_fetch_array(mysqli_query($link, $query));
     </section>
    
     <!--  -->
-    <section class="my-4">
-        <div class="container ">
-                <h1 class="text-left p-2 m-1 font-weigth-bold" style="font-size:calc(20px + 1.7vw);">Historial</h1>
-                <div class="container py-2 mb-2">
-                    <form method='GET' class="row">
-                        <div class="col-8">
-                            <input class="form-control" name="search3" type="text" value="" placeholder="Fecha">
-                        </div>
-                        <div class="col-4">
-                            <button class="btn btn-danger">Buscar</button>
-                        </div>
-                    </form>
-                    <?php
-                    $search3 ="";
-                        if(isset($_GET['search3'])){
-                            $search3 = $_GET['search3'];
-                        }
-                    ?>
-                </div>
-                <section class="container barra" style="overflow-y: scroll; height:20rem">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">Dia</th>
-                                <th scope="col">Accion</th>
-                                <th scope="col">Articulo</th>
-                                <th scope="col">ID de articulo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                            <?php
-                            if($search3 == ""){
-                                $query = "SELECT * FROM historial order by tmsp desc;";
-                            }
-                            else{
-                                $query = "SELECT * FROM historial where tmsp like '%$search3%' or accion like '%$search3% or articulo like '%$search3% order by tmsp";
-                                echo $query;
-                            };
-                            $res = mysqli_query($link, $query);
-                            print_r($res);
-                                while ($row = mysqli_fetch_array($res))
-                                {
-                                    echo '<tr>';
-                                    echo "<th scope='col'>". $row["tmsp"]."</th>";
-                                    echo "<th scope='col'>". $row["accion"]."</th>";
-                                    echo "<th scope='col'>". $row["articulo"]."</th>";
-                                    echo "<th scope='col'>". $row["id_articulo"]."</th>";
-                                    echo '</tr>';
-    
-                                }
-                            ?>
-                        </tbody>
-                    </table>
-                </section>
-        </div>
-    </section>
     <script src="./js/anular.js"></script>
     <script src="./js/del.js"></script>
     <script src="./js/retirar.js"></script>
