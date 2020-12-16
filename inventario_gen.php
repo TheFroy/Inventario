@@ -35,6 +35,34 @@ function getTable($cod){
     };
 };
 
+function getTableAll(){
+    $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+    if($link === false){
+        die("ERROR: Could not connect. " . mysqli_connect_error());
+    };
+
+    $query = "SELECT articulos_oficina.id, articulos_oficina.nombre, articulos_oficina.marca, articulos_oficina.modelo, articulos_oficina.descripcion, articulos_oficina.cantidad, articulos_oficina.precio,oficinas.id AS id_oficina, articulos_oficina.cantidad*articulos_oficina.precio as 'total', oficinas.nombre as ofi_nombre FROM articulos_oficina inner join oficinas on articulos_oficina.id_oficina = oficinas.id  order by nombre asc;";
+    $res = mysqli_query($link, $query);
+    while ($row = mysqli_fetch_array($res))
+    {
+        echo '<tr>';
+        echo "<th scope='col' class='d-none' id='".$row['id']."'>". $row["id"]."</th>";
+        echo "<th scope='col' id='nom".$row['id']."'>". $row["nombre"]."</th>";
+        echo "<th scope='col' id='marca".$row['id']."'>". $row["marca"]."</th>";
+        echo "<th scope='col'class='d-none' id='modelo".$row['id']."'>". $row["modelo"]."</th>";
+        echo "<th scope='col' class='d-none' id='desc".$row['id']."'>". $row["descripcion"]."</th>";
+        echo "<th scope='col' id='cant".$row['id']."'>". $row["cantidad"]."</th>";
+        echo "<th scope='col' class=''>". $row["ofi_nombre"]."</th>";
+        echo "<th scope='col' class='d-none' id='ofi".$row['id']."'>". $row["id_oficina"]."</th>";
+        echo "<th scope='col' id='precio".$row['id']."'>". $row["precio"]."</th>";
+        echo "<th scope='col'>". $row["total"]."</th>";
+        echo "<th scope='col'><a data-toggle='modal' data-target='#modal_upd_nart' id=".$row["id"]." class='btn btn-info info-nart'>+info</a></th>";
+        echo "<th scope='col'><a data-toggle='modal' data-target='#modal_del_nart' id=".$row["id"]." class='btn btn-danger del_nart'>Borrar</a></th>";
+        echo '</tr>';
+        
+    };
+};
+
 function getOficina($cod){
     $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
     if($link === false){
@@ -118,6 +146,44 @@ include './components/modal_add_nart.php';
             </div>
         </div>
     </div>
+
+    <div id="accordion">
+        <div class="card">
+            <div  class="card-header mb-0 text-left" >
+            <h3 class="font-weight-bold" data-toggle="collapse" data-target="#collapseall" aria-expanded="true" aria-controls="collapseOne" id="headingOne">Ver todo</h3>
+            <div id="collapseall" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="py-2">
+                    <section class="">
+                        <div class="container-fluid">
+                                <!-- <h1 class="text-left p-2 m-1 font-weigth-bold" style="font-size:calc(20px + 1.7vw);">Estudio #2</h1> -->
+                                <section class="container barra" style="overflow-y: scroll; height:20rem">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <!-- <th scope="col">ID</th> -->
+                                                <th scope="col">Nombre</th>
+                                                <th scope="col">Marca</th>
+                                                <!-- <th scope="col">Modelo</th> -->
+                                                <!-- <th scope="col">Descripcion</th> -->
+                                                <th scope="col">Cantidad</th>
+                                                <th scope="col">Oficina</th>
+                                                <th scope="col">Precio Uni.</th>
+                                                <th scope="col">Total</th>
+                                                <th scope="col"></th>
+                                                <th scope="col"></th>
+                                                <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody><?php getTableAll();?></tbody>
+                                    </table>
+                                </section>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        </div>
+
     <div id="accordion">
         <div class="card">
             <div  class="card-header mb-0 text-left" >

@@ -13,8 +13,6 @@ $oficina = $_POST['upd_ofi_nart'];
 
 $query = "update articulos_oficina set nombre = '$nombre', marca = '$marca', modelo = '$modelo', descripcion = '$desc', cantidad = $cant, precio = $precio, id_oficina = $oficina where id = $id;";
 $result = mysqli_query($link, $query);
-print_r($_POST);
-echo $query;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo ("<script>
     window.alert('Se ha actualizado el articulo con éxito!');
