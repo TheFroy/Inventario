@@ -93,38 +93,7 @@ include './components/modal_add_nart.php';
 </head>
 <body>
 
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="./main_page.php">Star Productions</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-          
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item ">
-                    <a class="nav-link" href="./main_page.php">Inventario de sublimacion<span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item ">
-                    <a class="nav-link" href="./usuarios.php">usuarios</a>
-                    </li>
-                    <li class="nav-item active">
-                    <a class="nav-link" href="./inventario_gen.php">inventario general</a>
-                    </li>
-                </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <div class="container-fluid p-2 ">
-                      <span class="p-2">
-                        <img src="./img/user.svg" class="rounded-circle " alt="" height="30">
-                        <span>Hola, <?php echo htmlspecialchars($_SESSION["username"]); ?></span>
-                      </span>
-                      <!-- <a href="reset-password.php" class="btn btn-warning"></a> -->
-                      <a href="logout.php" class="btn btn-danger mr-1">Cerrar sesion</a>
-                    </div>
-                  </form>
-            </div>
-          </nav>
-    </header>
+<?php include './components/header.php' ?>
 <!--  -->
 
     <div class="container-fluid p-3 ">
@@ -147,7 +116,42 @@ include './components/modal_add_nart.php';
         </div>
     </div>
 
-    
+    <div id="accordion">
+        <div class="card">
+            <div  class="card-header mb-0 text-left" >
+            <h3 class="font-weight-bold" data-toggle="collapse" data-target="#collapseall" aria-expanded="true" aria-controls="collapseOne" id="headingOne">Ver todo</h3>
+            <div id="collapseall" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="py-2">
+                    <section class="">
+                        <div class="container-fluid">
+                                <!-- <h1 class="text-left p-2 m-1 font-weigth-bold" style="font-size:calc(20px + 1.7vw);">Estudio #2</h1> -->
+                                <section class="container barra" style="overflow-y: scroll; height:20rem">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <!-- <th scope="col">ID</th> -->
+                                                <th scope="col">Nombre</th>
+                                                <th scope="col">Marca</th>
+                                                <!-- <th scope="col">Modelo</th> -->
+                                                <!-- <th scope="col">Descripcion</th> -->
+                                                <th scope="col">Cantidad</th>
+                                                <th scope="col">Oficina</th>
+                                                <th scope="col">Precio Uni.</th>
+                                                <th scope="col">Total</th>
+                                                <th scope="col"></th>
+                                                <th scope="col"></th>
+                                                <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody><?php getTableAll();?></tbody>
+                                    </table>
+                                </section>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        </div>
 
     <div id="accordion">
         <div class="card">
